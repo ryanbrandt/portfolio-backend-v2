@@ -1,0 +1,195 @@
+service: portfolio-backend-v2
+app: portfolio-backend-v2-app
+
+custom:
+  secret: ${env:PORTFOLIO_DB_SECRET:}
+  host: ${env:PORTFOLIO_DB_HOST:}
+  user: ${env:PORTFOLIO_DB_USER:}
+  warmup:
+    prewarm: true
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    PORTFOLIO_DB_SECRET: ${self:custom.secret}
+    PORTFOLIO_DB_HOST: ${self:custom.host}
+    PORTFOLIO_DB_USER: ${self:custom.user}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "lambda:InvokeFunction"
+        - "cognito-identity:*"
+        - "cognito-idp:*"
+        - "cognito-sync:*"
+        - "iam:ListRoles"
+        - "iam:ListOpenIdConnectProviders"
+        - "sns:ListPlatformApplications"
+        - "logs:PutLogEvents"
+        - "ec2:CreateNetworkInterface"
+        - "ec2:DescribeNetworkInterfaces"
+        - "ec2:DeleteNetworkInterface"
+      Resource: "*"
+  stage: dev
+  region: us-east-1
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-stage-variables
+  - serverless-plugin-warmup
+
+functions:
+  blogList:
+    handler: api/blog.list
+    warmup: true
+    events:
+      - http:
+          method: get
+          cors: true
+          path: /blog
+  blogCreate:
+    handler: api/blog.create
+    warmup: true
+    events:
+      - http:
+          method: post
+          cors: true
+          path: /blog
+          request: 
+            body:
+              name: true
+              content: true
+  blogUpdate:
+    handler: api/blog.update
+    warmup: true
+    events:
+      - http:
+          method: put
+          cors: true
+          path: /blog/{blogId}
+          request:
+            path:
+              blogId: true
+            body:
+              name: true
+              content: true
+  blogDelete:
+    handler: api/blog.destroy
+    warmup: true
+    events:
+      - http:
+          method: delete
+          cors: true
+          path: /blog/{blogId}
+          request:
+            path:
+              blogId: true
+    resumeList:
+    handler: api/resume.list
+    warmup: true
+    events:
+      - http:
+          method: get
+          cors: true
+          path: /resume
+  resumeCreate:
+    handler: api/resume.create
+    warmup: true
+    events:
+      - http:
+          method: post
+          cors: true
+          path: /resume
+          request:
+            body:
+              name: true
+              description: true
+              accomplishments: false
+  resumeUpdate:
+    handler: api/resume.update
+    warmup: true
+    events:
+      - http:
+          method: put
+          cors: true
+          path: /resume/{resumeId}
+          request:
+            path:
+              resumeId: true
+            body:
+              name: true
+              description: true
+              accomplishments: false
+  resumeDelete:
+    handler: api/resume.destroy
+    warmup: true
+    events:
+      - http:
+          method: delete
+          cors: true
+          path: /resume/{resumeId}
+          request:
+            path:
+              resumeId: true
+  workList:
+    handler: api/work.list
+    warmup: true
+    events:
+      - http:
+          method: get
+          cors: true
+          path: /work
+  workCreate:
+    handler: api/work.create
+    warmup: true
+    events:
+      - http:
+          method: post
+          cors: true
+          path: /work
+          request:
+            body:
+              name: true
+              description: true
+              image: false
+              links: false
+  workUpdate:
+    handler: api/work.update
+    warmup: true
+    events:
+      - http:
+          method: put
+          cors: true
+          path: /work/{workId}
+          request:
+            path:
+              workId: true
+            body:
+              name: true
+              description: true
+              image: false
+              links: false
+  workDelete:
+    handler: api/work.destroy
+    warmup: true
+    events:
+      - http:
+          method: delete
+          cors: true
+          path: /work/{workId}
+          request:
+            path:
+              workId: true
+  contact:
+    handler: api/contact.sendMessage
+    warmup: true
+    events:
+      - http:
+        method: post
+        cors: true
+        path: /contact
+        request:
+          body:
+            name: true
+            email: true
+            content: true
