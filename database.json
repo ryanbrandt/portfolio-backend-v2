@@ -2,8 +2,8 @@
   "defaultEnv": "development",
   "development": {
     "host": { "ENV": "PORTFOLIO_DB_HOST" },
-    "port": { "ENV": "PORTFOLIO_DB_PORT" },
-    "database": "portfolio",
+    "port": 3306,
+    "database": { "ENV": "PORTFOLIO_DB" },
     "driver": "mysql",
     "user": { "ENV": "PORTFOLIO_DB_USER" },
     "password": { "ENV": "PORTFOLIO_DB_SECRET" },

@@ -5,6 +5,7 @@ custom:
   secret: ${env:PORTFOLIO_DB_SECRET:}
   host: ${env:PORTFOLIO_DB_HOST:}
   user: ${env:PORTFOLIO_DB_USER:}
+  database: ${env:PORTFOLIO_DB}
   warmup:
     prewarm: true
 
@@ -15,6 +16,7 @@ provider:
     PORTFOLIO_DB_SECRET: ${self:custom.secret}
     PORTFOLIO_DB_HOST: ${self:custom.host}
     PORTFOLIO_DB_USER: ${self:custom.user}
+    PORTFOLIO_DB: ${self:custom.database}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -55,7 +57,7 @@ functions:
           method: post
           cors: true
           path: /blog
-          request: 
+          request:
             body:
               name: true
               content: true
@@ -84,7 +86,7 @@ functions:
           request:
             path:
               blogId: true
-    resumeList:
+  resumeList:
     handler: api/resume.list
     warmup: true
     events:
