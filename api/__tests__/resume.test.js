@@ -11,4 +11,10 @@ describe("Resume endpoint", () => {
     expect(results.status).toBe(200);
     expect(results.data).toBeDefined();
   });
+
+  test("Creates a new resume item");
+
+  test("Updates an existing resume item");
+
+  test("Deletes an existing resume item");
 });

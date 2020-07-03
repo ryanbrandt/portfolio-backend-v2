@@ -106,7 +106,9 @@ functions:
             body:
               name: true
               description: true
-              accomplishments: false
+              datestring: true
+              accomplishments: true
+              tags: true
   resumeUpdate:
     handler: api/resume.update
     warmup: true
@@ -121,7 +123,9 @@ functions:
             body:
               name: true
               description: true
-              accomplishments: false
+              datestring: true
+              accomplishments: true
+              tags: true
   resumeDelete:
     handler: api/resume.destroy
     warmup: true

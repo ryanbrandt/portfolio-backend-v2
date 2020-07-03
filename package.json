@@ -23,6 +23,7 @@
     "validator": "^12.0.0"
   },
   "scripts": {
+    "start-local": "sls offline -s local",
     "test": "jest test",
     "migrate": "db-migrate"
   },

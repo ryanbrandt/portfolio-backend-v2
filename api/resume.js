@@ -31,12 +31,14 @@ async function create(event, context) {
       name, 
       datestring,
       description,
-      tags
+      tags,
+      accomplishments
     ) VALUES (
       ${mysql.escape(params.name)},
       ${mysql.escape(params.datestring)},
       ${mysql.escape(params.description)},
-      ${mysql.escape(params.tags)}
+      ${mysql.escape(params.tags)},
+      ${mysql.escape(params.accomplishments)}
     );
   `;
 
@@ -54,9 +56,55 @@ async function create(event, context) {
   return response;
 }
 
-async function update(event, context) {}
+async function update(event, context) {
+  const { pathParameters, body } = event;
+  const { resumeId } = pathParameters;
+  const params = JSON.parse(body);
 
-async function destroy(event, context) {}
+  const sql = `
+    UPDATE experience
+    SET 
+      name = ${mysql.escape(params.name)},
+      datestring = ${mysql.escape(params.datestring)},
+      description = ${mysql.escape(params.description)},
+      tags = ${mysql.escape(params.tags)},
+      accomplishments = ${mysql.escape(params.accomplishments)}
+    WHERE id = ${resumeId};
+  `;
+
+  const db = DB.getConnection(DBConfig);
+  let response;
+  try {
+    await DB.query(db, sql);
+    response = Response.basic(204, "Item successfully updated");
+  } catch (e) {
+    response = Response.simple(500, "Failed to update item");
+  } finally {
+    db.destroy();
+  }
+
+  return response;
+}
+
+async function destroy(event, context) {
+  const { pathParameters } = event;
+  const { resumeId } = pathParameters;
+
+  const sql = `
+    DELETE FROM experience WHERE id = ${resumeId};
+  `;
+
+  try {
+    await DB.query(db, sql);
+    response = Response.basic(204, "Item successfully deleted");
+  } catch (e) {
+    response = Response.basic(500, "Failed to delete item");
+  } finally {
+    db.destroy();
+  }
+
+  return response;
+}
 
 module.exports = {
   list,
