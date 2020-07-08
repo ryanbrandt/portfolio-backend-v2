@@ -27,18 +27,16 @@ async function create(event, context) {
   const params = JSON.parse(body);
 
   const sql = `
-    INSERT INTO EXPERIENCE (
+    INSERT INTO experience (
       name, 
       datestring,
       description,
-      tags,
-      accomplishments
+      tags
     ) VALUES (
       ${mysql.escape(params.name)},
       ${mysql.escape(params.datestring)},
       ${mysql.escape(params.description)},
-      ${mysql.escape(params.tags)},
-      ${mysql.escape(params.accomplishments)}
+      ${mysql.escape(params.tags)}
     );
   `;
 
@@ -67,8 +65,7 @@ async function update(event, context) {
       name = ${mysql.escape(params.name)},
       datestring = ${mysql.escape(params.datestring)},
       description = ${mysql.escape(params.description)},
-      tags = ${mysql.escape(params.tags)},
-      accomplishments = ${mysql.escape(params.accomplishments)}
+      tags = ${mysql.escape(params.tags)}
     WHERE id = ${resumeId};
   `;
 
@@ -94,6 +91,8 @@ async function destroy(event, context) {
     DELETE FROM experience WHERE id = ${resumeId};
   `;
 
+  const db = DB.getConnection(DBConfig);
+  let response;
   try {
     await DB.query(db, sql);
     response = Response.basic(204, "Item successfully deleted");

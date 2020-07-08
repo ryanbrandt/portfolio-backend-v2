@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start-local": "sls offline -s local",
-    "test": "jest test",
+    "test": "jest test --runInBand",
     "migrate": "db-migrate"
   },
   "jest": {
