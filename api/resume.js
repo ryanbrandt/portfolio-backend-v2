@@ -11,7 +11,6 @@ async function list(event, context) {
   let response;
   try {
     const data = await DB.query(db, sql);
-    console.log(data);
     response = Response.withPayload(200, data);
   } catch (e) {
     response = Response.basic(500, "Failed database query");
@@ -66,7 +65,7 @@ async function update(event, context) {
       datestring = ${mysql.escape(params.datestring)},
       description = ${mysql.escape(params.description)},
       tags = ${mysql.escape(params.tags)}
-    WHERE id = ${resumeId};
+    WHERE id = ${mysql.escape(resumeId)};
   `;
 
   const db = DB.getConnection(DBConfig);
@@ -88,7 +87,7 @@ async function destroy(event, context) {
   const { resumeId } = pathParameters;
 
   const sql = `
-    DELETE FROM experience WHERE id = ${resumeId};
+    DELETE FROM experience WHERE id = ${mysql.escape(resumeId)};
   `;
 
   const db = DB.getConnection(DBConfig);
