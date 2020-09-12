@@ -1,4 +1,5 @@
-const { DB, Response } = require("node-backend-utils");
+const mysql = require("mysql");
+const { DB, Response } = require("node-backend-utils/lib");
 
 const { DBConfig } = require("../utils/constants");
 
