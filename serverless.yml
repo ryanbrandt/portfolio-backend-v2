@@ -184,16 +184,3 @@ functions:
           request:
             path:
               workId: true
-  contact:
-    handler: api/contact.sendMessage
-    warmup: true
-    events:
-      - http:
-        method: post
-        cors: true
-        path: /contact
-        request:
-          body:
-            name: true
-            email: true
-            content: true

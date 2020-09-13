@@ -11,7 +11,11 @@ async function list(event, context) {
   let response;
   try {
     const data = await DB.query(db, sql);
-    response = Response.withPayload(200, data);
+    const parsedData = data.map((item) => ({
+      ...item,
+      tags: item.tags ? JSON.parse(item.tags) : [],
+    }));
+    response = Response.withPayload(200, parsedData);
   } catch (e) {
     response = Response.basic(500, "Failed database query");
   } finally {
