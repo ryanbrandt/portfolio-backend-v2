@@ -6,6 +6,10 @@ custom:
   host: ${env:PORTFOLIO_DB_HOST:}
   user: ${env:PORTFOLIO_DB_USER:}
   database: ${env:PORTFOLIO_DB}
+  email: ${env:EMAIL}
+  emailClient: ${env:EMAIL_CLIENT_ID}
+  emailClientSecret: ${env:EMAIL_CLIENT_SECRET}
+  emailRefresh: ${env:EMAIL_REFRESH_TOKEN}
   warmup:
     prewarm: true
 
@@ -17,6 +21,10 @@ provider:
     PORTFOLIO_DB_HOST: ${self:custom.host}
     PORTFOLIO_DB_USER: ${self:custom.user}
     PORTFOLIO_DB: ${self:custom.database}
+    EMAIL: ${self:custom.email}
+    EMAIL_CLIENT_ID: ${self:custom.emailClient}
+    EMAIL_CLIENT_SECRET: ${self:custom.emailClientSecret}
+    EMAIL_REFRESH_TOKEN: ${self:custom.emailRefresh}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -184,3 +192,16 @@ functions:
           request:
             path:
               workId: true
+  contact:
+    handler: api/contact.sendMessage
+    warmup: true
+    events:
+      - http:
+          method: post
+          cors: true
+          path: /contact
+          request:
+            body:
+              name: true
+              email: true
+              content: true
