@@ -1,3 +1,5 @@
+"use strict";
+
 async function list(event, context) {}
 
 async function create(event, context) {}

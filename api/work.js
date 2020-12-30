@@ -1,6 +1,9 @@
+"use strict";
+
 const mysql = require("mysql");
 const { DB, Response } = require("node-backend-utils/lib");
 
+const { validateAdmin } = require("../utils/helpers");
 const { DBConfig } = require("../utils/constants");
 
 async function list(event, context) {
@@ -27,6 +30,10 @@ async function list(event, context) {
 }
 
 async function create(event, context) {
+  if (!validateAdmin(event)) {
+    return Response.basic(401, "Unauthorized");
+  }
+
   const { body } = event;
   const params = JSON.parse(body);
 
@@ -37,14 +44,18 @@ async function create(event, context) {
       description,
       tags,
       icons,
-      image
+      image,
+      source,
+      deploy
     ) VALUES (
       ${mysql.escape(params.name)},
       ${mysql.escape(params.datestring)},
       ${mysql.escape(params.description)},
       ${mysql.escape(params.tags)},
       ${mysql.escape(params.icons)},
-      ${mysql.escape(params.image)}
+      ${mysql.escape(params.image)},
+      ${mysql.escape(params.source)},
+      ${mysql.escape(params.deploy)}
     );
   `;
 
@@ -63,6 +74,10 @@ async function create(event, context) {
 }
 
 async function update(event, context) {
+  if (!validateAdmin(event)) {
+    return Response.basic(401, "Unauthorized");
+  }
+
   const { pathParameters, body } = event;
   const { workId } = pathParameters;
   const params = JSON.parse(body);
@@ -75,7 +90,10 @@ async function update(event, context) {
       description = ${mysql.escape(params.description)},
       tags = ${mysql.escape(params.tags)},
       icons = ${mysql.escape(params.icons)},
-      image = ${mysql.escape(params.image)}
+      image = ${mysql.escape(params.image)},
+      source = ${mysql.escape(params.source)},
+      deploy = ${mysql.escape(params.deploy)},
+      modified = CURRENT_TIMESTAMP()
     WHERE id = ${mysql.escape(workId)};
   `;
 
@@ -94,6 +112,10 @@ async function update(event, context) {
 }
 
 async function destroy(event, context) {
+  if (!validateAdmin(event)) {
+    return Response.basic(401, "Unauthorized");
+  }
+
   const { pathParameters, body } = event;
   const { workId } = pathParameters;
 

@@ -1,3 +1,5 @@
+"use strict";
+
 const Email = require("email-templates");
 const { Response } = require("node-backend-utils/lib");
 

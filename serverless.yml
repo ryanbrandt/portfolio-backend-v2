@@ -115,7 +115,8 @@ functions:
               name: true
               description: true
               datestring: true
-              tags: true
+              achievements: false
+              tags: false
   resumeUpdate:
     handler: api/resume.update
     warmup: true
@@ -131,7 +132,8 @@ functions:
               name: true
               description: true
               datestring: true
-              tags: true
+              achievements: false
+              tags: false
   resumeDelete:
     handler: api/resume.destroy
     warmup: true
@@ -163,8 +165,12 @@ functions:
             body:
               name: true
               description: true
+              datestring: true
               image: false
               links: false
+              tags: false
+              source: false
+              deploy: false
   workUpdate:
     handler: api/work.update
     warmup: true
@@ -179,8 +185,12 @@ functions:
             body:
               name: true
               description: true
+              datestring: true
               image: false
               links: false
+              tags: false
+              source: false
+              deploy: false
   workDelete:
     handler: api/work.destroy
     warmup: true

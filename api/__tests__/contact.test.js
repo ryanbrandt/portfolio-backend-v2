@@ -1,6 +1,6 @@
 const apisauce = require("apisauce");
 
-describe.only("Contact endpoint", () => {
+describe("Contact endpoint", () => {
   const api = apisauce.create({
     baseURL: "http://localhost:3000",
   });

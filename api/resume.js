@@ -1,5 +1,9 @@
+"use strict";
+
 const mysql = require("mysql");
 const { DB, Response } = require("node-backend-utils/lib");
+
+const { validateAdmin } = require("../utils/helpers");
 const { DBConfig } = require("../utils/constants");
 
 async function list(event, context) {
@@ -26,6 +30,10 @@ async function list(event, context) {
 }
 
 async function create(event, context) {
+  if (!validateAdmin(event)) {
+    return Response.basic(401, "Unauthorized");
+  }
+
   const { body } = event;
   const params = JSON.parse(body);
 
@@ -34,11 +42,13 @@ async function create(event, context) {
       name, 
       datestring,
       description,
+      achievements,
       tags
     ) VALUES (
       ${mysql.escape(params.name)},
       ${mysql.escape(params.datestring)},
       ${mysql.escape(params.description)},
+      ${mysql.escape(params.achievements)},
       ${mysql.escape(params.tags)}
     );
   `;
@@ -58,6 +68,10 @@ async function create(event, context) {
 }
 
 async function update(event, context) {
+  if (!validateAdmin(event)) {
+    return Response.basic(401, "Unauthorized");
+  }
+
   const { pathParameters, body } = event;
   const { resumeId } = pathParameters;
   const params = JSON.parse(body);
@@ -68,7 +82,9 @@ async function update(event, context) {
       name = ${mysql.escape(params.name)},
       datestring = ${mysql.escape(params.datestring)},
       description = ${mysql.escape(params.description)},
-      tags = ${mysql.escape(params.tags)}
+      achievements = ${mysql.escape(params.achievements)},
+      tags = ${mysql.escape(params.tags)},
+      modified = CURRENT_TIMESTAMP()
     WHERE id = ${mysql.escape(resumeId)};
   `;
 
@@ -87,6 +103,10 @@ async function update(event, context) {
 }
 
 async function destroy(event, context) {
+  if (!validateAdmin(event)) {
+    return Response.basic(401, "Unauthorized");
+  }
+
   const { pathParameters } = event;
   const { resumeId } = pathParameters;
 

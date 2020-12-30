@@ -4,10 +4,14 @@ const mysql = require("mysql");
 const { DB } = require("node-backend-utils/lib");
 
 const { DBConfig } = require("../../utils/constants");
+const { ADMIN_JWT } = require("../../mock");
 
 describe("Resume endpoint", () => {
   const api = apisauce.create({
     baseURL: "http://localhost:3000",
+    headers: {
+      Authorization: ADMIN_JWT,
+    },
   });
 
   const DUMMY_PAYLOAD = {
