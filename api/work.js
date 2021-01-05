@@ -103,7 +103,7 @@ async function update(event, context) {
     await DB.query(db, sql);
     response = Response.basic(204, "Item successfully updated");
   } catch (e) {
-    response = Response.simple(500, "Failed to update item");
+    response = Response.basic(500, "Failed to update item");
   } finally {
     db.destroy();
   }
