@@ -13,6 +13,7 @@
     "serverless-plugin-warmup": "^4.7.1-rc.1"
   },
   "devDependencies": {
+    "aws-sdk": "^2.823.0",
     "apisauce": "^1.1.1",
     "babel-eslint": "^10.0.3",
     "db-migrate": "^0.11.6",

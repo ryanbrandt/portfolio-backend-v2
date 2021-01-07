@@ -39,6 +39,7 @@ provider:
         - "ec2:CreateNetworkInterface"
         - "ec2:DescribeNetworkInterfaces"
         - "ec2:DeleteNetworkInterface"
+        - "s3:PutObject"
       Resource: "*"
   stage: dev
   region: us-east-1
@@ -215,3 +216,16 @@ functions:
               name: true
               email: true
               content: true
+  getUploadUrl:
+    handler: api/common.getUploadUrl
+    warmup: true
+    events:
+      - http:
+          method: post
+          cors: true
+          path: /upload
+          request:
+            body:
+              bucket: true
+              filename: true
+              fileType: true
