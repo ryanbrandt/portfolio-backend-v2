@@ -15,6 +15,8 @@ function getSignedUploadUrl(bucket, filename, fileType) {
     ContentType: fileType,
   };
 
+  console.log(s3Params);
+
   return new Promise((resolve, reject) =>
     s3.getSignedUrl("putObject", s3Params, function(e, data) {
       if (e) {

@@ -40,6 +40,7 @@ provider:
         - "ec2:DescribeNetworkInterfaces"
         - "ec2:DeleteNetworkInterface"
         - "s3:PutObject"
+        - "s3:GetObject"
       Resource: "*"
   stage: dev
   region: us-east-1
