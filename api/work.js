@@ -15,10 +15,14 @@ async function list(event, context) {
   let response;
   try {
     const data = await DB.query(db, sql);
+
     const parsedData = data.map((item) => ({
       ...item,
+      primaryImage: item["s3_image_primary"],
+      secondaryImage: item["s3_image_secondary"],
       tags: item.tags ? JSON.parse(item.tags) : [],
     }));
+
     response = Response.withPayload(200, parsedData);
   } catch (e) {
     response = Response.basic(500, "Failed database query");
@@ -44,7 +48,8 @@ async function create(event, context) {
       description,
       tags,
       icons,
-      image,
+      s3_image_primary,
+      s3_image_secondary,
       source,
       deploy
     ) VALUES (
@@ -53,7 +58,8 @@ async function create(event, context) {
       ${mysql.escape(params.description)},
       ${mysql.escape(params.tags)},
       ${mysql.escape(params.icons)},
-      ${mysql.escape(params.image)},
+      ${mysql.escape(params.primaryImage)},
+      ${mysql.escape(params.secondaryImage)},
       ${mysql.escape(params.source)},
       ${mysql.escape(params.deploy)}
     );
@@ -90,7 +96,8 @@ async function update(event, context) {
       description = ${mysql.escape(params.description)},
       tags = ${mysql.escape(params.tags)},
       icons = ${mysql.escape(params.icons)},
-      image = ${mysql.escape(params.image)},
+      s3_image_primary = ${mysql.escape(params.primaryImage)},
+      s3_image_secondary = ${mysql.escape(params.secondaryImage)},
       source = ${mysql.escape(params.source)},
       deploy = ${mysql.escape(params.deploy)},
       modified = CURRENT_TIMESTAMP()

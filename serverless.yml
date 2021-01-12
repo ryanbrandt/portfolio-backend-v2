@@ -168,7 +168,8 @@ functions:
               name: true
               description: true
               datestring: true
-              image: false
+              primaryImage: false
+              secondaryImage: false
               links: false
               tags: false
               source: false
@@ -188,7 +189,8 @@ functions:
               name: true
               description: true
               datestring: true
-              image: false
+              primaryImage: false
+              secondaryImage: false
               links: false
               tags: false
               source: false
