@@ -6,7 +6,10 @@ const { Response } = require("node-backend-utils/lib");
 const { transporter } = require("../utils/transporter");
 
 async function sendMessage(event, context) {
-  const { body } = event;
+  const { body, requestContext } = event;
+  const { identity } = requestContext;
+  const { sourceIp } = identity;
+
   const params = JSON.parse(body);
   const { name, email, content } = params;
 
@@ -29,6 +32,7 @@ async function sendMessage(event, context) {
         name,
         email,
         content,
+        sourceIp,
       },
     });
 
