@@ -1,3 +1,3 @@
 # portfolio-backend-v2
 
-Portfolio backend rebuild, this time with serverless.
+(Portfolio)[https://github.com/ryanbrandt/portfolio-v2] serverless backend
