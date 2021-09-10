@@ -10,3 +10,6 @@ yarn.lock
 
 # admin validation mock
 mock.js
+
+# containers
+compose/
